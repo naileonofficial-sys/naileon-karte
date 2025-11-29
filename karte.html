@@ -303,7 +303,7 @@
     
     async function loadExistingData() {
       try {
-        const response = await fetch(`https://YOUR_RENDER_URL/api/karte/${userId}`);
+        const response = await fetch(`https://naileonkarte-api.onrender.com/api/karte/${userId}`);
         if (response.ok) {
           const data = await response.json();
           karteData = data;
@@ -412,7 +412,7 @@
         const method = isEditMode ? 'PUT' : 'POST';
         const endpoint = isEditMode ? `/api/karte/${userId}` : '/api/karte';
         
-        const response = await fetch(`https://YOUR_RENDER_URL${endpoint}`, {
+        const response = await fetch(`https://naileonkarte-api.onrender.com${endpoint}`, {
           method: method,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(karteData)

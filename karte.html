@@ -297,20 +297,6 @@
       font-weight: 600;
       font-size: 14px;
     }
-    
-    .loading-spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid #f0f0f0;
-      border-top: 4px solid #ff6b9d;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
   </style>
 </head>
 <body>
@@ -342,7 +328,7 @@
     </div>
   </div>
   
-  <div class="fixed-footer">
+  <div class="fixed-footer" id="footer">
     <div class="nav-buttons">
       <button class="btn btn-back" id="backBtn" onclick="goBack()">← 戻る</button>
       <button class="btn btn-next" id="nextBtn" onclick="goNext()">次へ →</button>
@@ -721,7 +707,8 @@
     function showPriceEstimate() {
       const price = calculatePrice();
       
-      document.getElementById('questionCard').innerHTML = `
+      const cardElement = document.getElementById('questionCard');
+      cardElement.innerHTML = `
         <div style="text-align: center;">
           <h2 style="font-size: 24px; margin-bottom: 30px; color: #333;">✨ 参考料金のご案内</h2>
           
@@ -754,17 +741,17 @@
         </div>
       `;
       
-      document.getElementById('nextBtn').textContent = '希望日時を入力する →';
-      document.getElementById('nextBtn').disabled = false;
-      document.getElementById('nextBtn').onclick = () => {
-        moveToNextStep();
-      };
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.textContent = '希望日時を入力する →';
+      nextBtn.disabled = false;
+      nextBtn.onclick = moveToNextStep;
+      
       document.getElementById('backBtn').onclick = () => {
         currentQuestionIndex = visibleQuestions.length - 1;
-        showQuestion();
         document.getElementById('nextBtn').textContent = '次へ →';
         document.getElementById('nextBtn').onclick = goNext;
         document.getElementById('backBtn').onclick = goBack;
+        showQuestion();
       };
     }
     
@@ -779,25 +766,27 @@
     }
     
     function moveToNextStep() {
+      // ステップ番号を増やす
       currentStepNumber++;
       currentQuestionIndex = 0;
       karteData.step = currentStepNumber;
       
+      // UIを更新
       updateStepIndicator();
       updateVisibleQuestions();
       
+      // ボタンをリセット
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.textContent = '次へ →';
+      nextBtn.onclick = goNext;
+      document.getElementById('backBtn').onclick = goBack;
+      
+      // データ保存
       if (currentStepNumber === 2) {
-        // ステップ2開始時にデータを保存
         saveKarteData('light');
       } else if (currentStepNumber === 3) {
-        // ステップ3開始時にデータを保存
         saveKarteData('middle');
       }
-      
-      // ボタンのテキストとイベントハンドラーをリセット
-      document.getElementById('nextBtn').textContent = '次へ →';
-      document.getElementById('nextBtn').onclick = goNext;
-      document.getElementById('backBtn').onclick = goBack;
       
       // 質問を表示
       showQuestion();
@@ -828,14 +817,13 @@
           <div class="completion-text">
             ご希望に合うネイリストを<br>マッチング中です...
           </div>
-          <div class="loading-spinner"></div>
-          <div class="completion-highlight">
+          <div class="completion-highlight" style="margin-top: 30px;">
             通常1-2時間以内にLINEでご連絡いたします 💅
           </div>
         </div>
       `;
       
-      document.querySelector('.fixed-footer').style.display = 'none';
+      document.getElementById('footer').style.display = 'none';
       
       try {
         karteData.status = 'full';

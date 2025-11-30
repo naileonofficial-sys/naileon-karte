@@ -290,23 +290,94 @@
           </div>
         </div>
 
+        ${karteData.city ? `
+        <div class="card">
+          <div class="card-label">市区町村</div>
+          <div class="card-value">${karteData.city}</div>
+        </div>
+        ` : ''}
+
+        <div class="section-title">
+          💅 メニュー情報
+        </div>
+
+        ${karteData.menuTarget ? `
+        <div class="card">
+          <div class="card-label">メニュー対象</div>
+          <div class="card-value">${karteData.menuTarget}</div>
+        </div>
+        ` : ''}
+
+        ${karteData.menuCategory ? `
+        <div class="card">
+          <div class="card-label">メニューカテゴリ</div>
+          <div class="card-value">${karteData.menuCategory}</div>
+        </div>
+        ` : ''}
+
+        ${karteData.menuDetail ? `
+        <div class="card">
+          <div class="card-label">メニュー詳細</div>
+          <div class="card-value">${karteData.menuDetail}</div>
+        </div>
+        ` : ''}
+
+        ${karteData.estimatedPrice ? `
+        <div class="card">
+          <div class="card-label">参考料金</div>
+          <div class="card-value">¥${karteData.estimatedPrice.toLocaleString()}</div>
+        </div>
+        ` : ''}
+
+        <div class="section-title">
+          📅 希望日時
+        </div>
+
+        ${karteData.preferredDate1 ? `
+        <div class="card">
+          <div class="card-label">第1希望</div>
+          <div class="card-value">${formatDate(karteData.preferredDate1)}</div>
+        </div>
+        ` : ''}
+
+        ${karteData.preferredDate2 ? `
+        <div class="card">
+          <div class="card-label">第2希望</div>
+          <div class="card-value">${formatDate(karteData.preferredDate2)}</div>
+        </div>
+        ` : ''}
+
+        ${karteData.preferredDate3 ? `
+        <div class="card">
+          <div class="card-label">第3希望</div>
+          <div class="card-value">${formatDate(karteData.preferredDate3)}</div>
+        </div>
+        ` : ''}
+
         <div class="section-title">
           👤 お客様情報
         </div>
 
+        ${karteData.fullName ? `
         <div class="card">
-          <div class="card-label">お名前</div>
-          <div class="card-value ${karteData.name ? '' : 'empty'}">
-            ${karteData.name || '未登録'}
-          </div>
+          <div class="card-label">本名</div>
+          <div class="card-value">${karteData.fullName}</div>
         </div>
+        ` : ''}
 
+        ${karteData.age ? `
         <div class="card">
-          <div class="card-label">電話番号</div>
-          <div class="card-value ${karteData.phone ? '' : 'empty'}">
-            ${karteData.phone || '未登録'}
-          </div>
+          <div class="card-label">年齢・年代</div>
+          <div class="card-value">${karteData.age}</div>
         </div>
+        ` : ''}
+
+        ${karteData.emergencyContact ? `
+        <div class="card">
+          <div class="card-label">緊急連絡先</div>
+          <div class="card-value">${karteData.emergencyContact}</div>
+        </div>
+        ` : ''}
 
         <button class="edit-btn" onclick="editKarte()">
           ✏️ カルテを編集する
@@ -323,8 +394,8 @@
     }
 
     function calculateCompletion(data) {
-      const requiredFields = ['scene', 'prefecture', 'name', 'phone'];
-      const filledFields = requiredFields.filter(field => data[field] && data[field].trim() !== '').length;
+      const requiredFields = ['scene', 'prefecture', 'menuTarget', 'menuCategory', 'menuDetail', 'preferredDate1', 'fullName', 'emergencyContact'];
+      const filledFields = requiredFields.filter(field => data[field] && data[field].toString().trim() !== '').length;
       return Math.round((filledFields / requiredFields.length) * 100);
     }
 
@@ -335,7 +406,7 @@
         'postnatal': '👶 産後ケア施設',
         'care': '🏢 介護・福祉施設'
       };
-      return labels[scene] || '未登録';
+      return labels[scene] || scene || '未登録';
     }
 
     function getPermissionLabel(permission) {
@@ -344,7 +415,7 @@
         'pending': '⏳ 確認中',
         'not_yet': '❌ まだです'
       };
-      return labels[permission] || '';
+      return labels[permission] || permission || '';
     }
 
     function formatDate(timestamp) {

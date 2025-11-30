@@ -742,19 +742,27 @@
             </div>
           </div>
           
-          <p style="margin-top: 30px; color: #666; font-size: 14px; line-height: 1.6;">
-            この料金で問題なければ、次のステップで<br>
-            希望日時をお聞かせください
-          </p>
+          <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); padding: 24px; border-radius: 14px; margin-top: 30px; border: 2px solid #ffb74d;">
+            <div style="font-size: 18px; font-weight: 700; color: #e65100; margin-bottom: 12px;">
+              💡 次のステップへ
+            </div>
+            <p style="color: #333; font-size: 15px; line-height: 1.8; margin: 0;">
+              この料金で問題なければ、<br>
+              <strong style="color: #ff6b9d;">希望日時</strong>をお聞かせください
+            </p>
+          </div>
         </div>
       `;
       
-      document.getElementById('nextBtn').textContent = '次のステップへ →';
+      document.getElementById('nextBtn').textContent = '希望日時を入力する →';
       document.getElementById('nextBtn').disabled = false;
-      document.getElementById('nextBtn').onclick = moveToNextStep;
+      document.getElementById('nextBtn').onclick = () => {
+        moveToNextStep();
+      };
       document.getElementById('backBtn').onclick = () => {
         currentQuestionIndex = visibleQuestions.length - 1;
         showQuestion();
+        document.getElementById('nextBtn').textContent = '次へ →';
         document.getElementById('nextBtn').onclick = goNext;
         document.getElementById('backBtn').onclick = goBack;
       };
@@ -786,9 +794,13 @@
         saveKarteData('middle');
       }
       
-      showQuestion();
+      // ボタンのテキストとイベントハンドラーをリセット
+      document.getElementById('nextBtn').textContent = '次へ →';
       document.getElementById('nextBtn').onclick = goNext;
       document.getElementById('backBtn').onclick = goBack;
+      
+      // 質問を表示
+      showQuestion();
     }
     
     async function saveKarteData(status) {

@@ -775,21 +775,21 @@
       updateStepIndicator();
       updateVisibleQuestions();
       
-      // ボタンをリセット
-      const nextBtn = document.getElementById('nextBtn');
-      nextBtn.textContent = '次へ →';
-      nextBtn.onclick = goNext;
-      document.getElementById('backBtn').onclick = goBack;
-      
-      // データ保存
+      // データ保存（非同期）
       if (currentStepNumber === 2) {
         saveKarteData('light');
       } else if (currentStepNumber === 3) {
         saveKarteData('middle');
       }
       
-      // 質問を表示
+      // 先に質問を表示
       showQuestion();
+      
+      // その後ボタンをリセット
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.textContent = '次へ →';
+      nextBtn.onclick = goNext;
+      document.getElementById('backBtn').onclick = goBack;
     }
     
     async function saveKarteData(status) {

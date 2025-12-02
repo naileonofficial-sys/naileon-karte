@@ -775,6 +775,13 @@
       updateStepIndicator();
       updateVisibleQuestions();
       
+      // カードの構造を復元
+      const cardElement = document.getElementById('questionCard');
+      cardElement.innerHTML = `
+        <div class="question-title" id="questionTitle"></div>
+        <div id="questionContent"></div>
+      `;
+      
       // データ保存（非同期）
       if (currentStepNumber === 2) {
         saveKarteData('light');
@@ -782,14 +789,14 @@
         saveKarteData('middle');
       }
       
-      // 先に質問を表示
-      showQuestion();
-      
-      // その後ボタンをリセット
+      // ボタンをリセット
       const nextBtn = document.getElementById('nextBtn');
       nextBtn.textContent = '次へ →';
       nextBtn.onclick = goNext;
       document.getElementById('backBtn').onclick = goBack;
+      
+      // 質問を表示
+      showQuestion();
     }
     
     async function saveKarteData(status) {
